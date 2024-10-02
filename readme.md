@@ -63,7 +63,7 @@ uvicorn main:app --reload
 
 ### 1. Upload Video
 
-- **Endpoint**: `/upload/`
+- **Endpoint**: `/video/upload/`
 - **Method**: `POST`
 - **Description**: Upload a video and get a unique ID.
 - **Request**:
@@ -78,7 +78,7 @@ uvicorn main:app --reload
 **Example Using cURL**:
 
 ```bash
-curl -X POST "http://127.0.0.1:8000/upload/" -F "file=@/path/to/your/video.mp4"
+curl -X POST "http://127.0.0.1:8000/video/upload/" -F "file=@/path/to/your/video.mp4"
 ```
 
 **Example Using Python**:
@@ -86,7 +86,7 @@ curl -X POST "http://127.0.0.1:8000/upload/" -F "file=@/path/to/your/video.mp4"
 ```python
 import requests
 
-url = "http://127.0.0.1:8000/upload/"
+url = "http://127.0.0.1:8000/video/upload/"
 file_path = "/path/to/your/video.mp4"
 
 with open(file_path, "rb") as file:
@@ -97,7 +97,7 @@ print(response.json())
 
 ### 2. Get Upload Status
 
-- **Endpoint**: `/status/{unique_id}`
+- **Endpoint**: `/video/status/{unique_id}`
 - **Method**: `GET`
 - **Description**: Check the current status of the video upload (`in progress`, `completed`, or `failed`).
 - **Request Parameter**:
@@ -113,14 +113,14 @@ print(response.json())
 **Example Using cURL**:
 
 ```bash
-curl "http://127.0.0.1:8000/status/{unique_id}"
+curl "http://127.0.0.1:8000/video/status/{unique_id}"
 ```
 
 Replace `{unique_id}` with the actual unique ID.
 
 ### 3. Get Video by Unique ID
 
-- **Endpoint**: `/video/{unique_id}`
+- **Endpoint**: `/video/view/{unique_id}`
 - **Method**: `GET`
 - **Description**: Retrieve the video using the unique ID.
 - **Request Parameter**:
@@ -130,4 +130,4 @@ Replace `{unique_id}` with the actual unique ID.
 **Example Using cURL**:
 
 ```bash
-curl -O "http://127.0.0.1:8000/video/{unique_id}"
+curl -O "http://127.0.0.1:8000/video/view/{unique_id}"
