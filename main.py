@@ -1,8 +1,7 @@
 from fastapi import FastAPI
-from routers import upload, status, video
+from routers import image
+from routers import video
 
 app = FastAPI()
-
-app.include_router(upload.router)
-app.include_router(status.router)
-app.include_router(video.router)
+app.include_router(image.router, prefix="/image")
+app.include_router(video.router, prefix="/video")
