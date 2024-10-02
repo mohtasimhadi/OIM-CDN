@@ -18,9 +18,9 @@ oim-cdn/
 
 ```
 
-- main.py: Entry point for the application.
-- routers/: Contains route definitions for uploading, checking status, retrieving, and deleting videos.
-- services/: Contains the business logic for handling video uploads and file operations.
+- `main.py` Entry point for the application.
+- `routers/` Contains route definitions for uploading, checking status, retrieving, and deleting videos.
+- `services/` Contains the business logic for handling video uploads and file operations.
 
 ## Installation
 
