@@ -1,8 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import FileResponse
-import os
-import shutil
-import uuid
+import os, uuid, shutil
+from services.video_service import get_image_path
 
 router = APIRouter()
 
@@ -25,21 +24,15 @@ async def upload_image(file: UploadFile = File(...)):
 
 @router.get("/view/{image_id}")
 async def view_image(image_id: str):
-    # Search for the image file by UUID
-    matching_files = [f for f in os.listdir(IMAGE_DIRECTORY) if f.startswith(image_id)]
-    if not matching_files:
+    image_path = get_image_path(image_id)
+    if not image_path:
         raise HTTPException(status_code=404, detail="Image not found")
-    
-    file_path = os.path.join(IMAGE_DIRECTORY, matching_files[0])
-    return FileResponse(file_path)
+    return FileResponse(image_path)
 
 @router.delete("/delete/{image_id}")
 async def delete_image(image_id: str):
-    # Search for the image file by UUID
-    matching_files = [f for f in os.listdir(IMAGE_DIRECTORY) if f.startswith(image_id)]
-    if not matching_files:
+    image_path = get_image_path(image_id)
+    if not image_path:
         raise HTTPException(status_code=404, detail="Image not found")
-    
-    file_path = os.path.join(IMAGE_DIRECTORY, matching_files[0])
-    os.remove(file_path)
+    os.remove(image_path)
     return {"message": f"Image with ID '{image_id}' deleted successfully."}
