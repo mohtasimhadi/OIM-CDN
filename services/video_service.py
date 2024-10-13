@@ -7,10 +7,8 @@ from fastapi import UploadFile, BackgroundTasks
 import ffmpeg
 
 VIDEO_STORAGE = "videos"
-IMAGE_STORAGE = "images"
 TEMP_STORAGE  = 'temp_videos'
 os.makedirs(VIDEO_STORAGE, exist_ok=True)
-os.makedirs(IMAGE_STORAGE, exist_ok=True)
 os.makedirs(TEMP_STORAGE, exist_ok=True)
 
 upload_status: Dict[str, str] = {}
@@ -42,11 +40,6 @@ def get_video_path(unique_id: str):
         return video_path
     return None
 
-def get_image_path(unique_id: str):
-    image_path = os.path.join(IMAGE_STORAGE, f"{unique_id}.jpg")
-    if os.path.exists(image_path):
-        return image_path
-    return None
 
 def delete_video_file(unique_id: str):
     video_path = os.path.join(VIDEO_STORAGE, f"{unique_id}.mp4")

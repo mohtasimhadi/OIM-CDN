@@ -1,26 +1,26 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import FileResponse
-import os, uuid, shutil
-from services.video_service import get_image_path
+import os
+from services.image_service import initiate_image_upload, get_image_path
+from fastapi import BackgroundTasks
 
 router = APIRouter()
 
-IMAGE_DIRECTORY = "images/"
-
-if not os.path.exists(IMAGE_DIRECTORY):
-    os.makedirs(IMAGE_DIRECTORY)
-
 @router.post("/upload/")
-async def upload_image(file: UploadFile = File(...)):
-    unique_id = str(uuid.uuid4())
-    extension = os.path.splitext(file.filename)[1]
-    unique_filename = f"{unique_id}{extension}"
-    file_path = os.path.join(IMAGE_DIRECTORY, unique_filename)
+async def upload_image(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
+    return await initiate_image_upload(background_tasks, file)
+
+# @router.post("/upload/")
+# async def upload_image(file: UploadFile = File(...)):
+#     unique_id = str(uuid.uuid4())
+#     extension = os.path.splitext(file.filename)[1]
+#     unique_filename = f"{unique_id}{extension}"
+#     file_path = os.path.join(IMAGE_DIRECTORY, unique_filename)
     
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+#     with open(file_path, "wb") as buffer:
+#         shutil.copyfileobj(file.file, buffer)
     
-    return {"image_id": unique_id}
+#     return {"image_id": unique_id}
 
 @router.get("/view/{image_id}")
 async def view_image(image_id: str):
