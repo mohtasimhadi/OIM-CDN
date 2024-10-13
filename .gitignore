@@ -2,3 +2,9 @@ __pycache__
 env
 videos
 images
+*.ipynb
+*.log
+*.mbtree
+*.mp4
+*.jpg
+*.temp
