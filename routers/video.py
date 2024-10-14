@@ -1,8 +1,9 @@
+import os
 from fastapi import APIRouter, HTTPException
 from services.video_service import get_upload_status
 from fastapi import APIRouter, UploadFile, BackgroundTasks
 from services.video_service import initiate_video_upload
-from fastapi.responses import FileResponse
+from fastapi.responses import StreamingResponse
 from services.video_service import get_video_path, delete_video_file
 
 router = APIRouter()
@@ -12,7 +13,13 @@ async def get_video(unique_id: str):
     video_path = get_video_path(unique_id)
     if not video_path:
         raise HTTPException(status_code=404, detail="Video not found")
-    return FileResponse(video_path)
+        # Stream the video file
+    def iter_file():
+        with open(video_path, "rb") as file:
+            while chunk := file.read(1024 * 1024):  # Read in 1MB chunks
+                yield chunk
+
+    return StreamingResponse(iter_file(), media_type="video/mp4")
 
 @router.delete("/delete/{unique_id}")
 async def delete_video(unique_id: str):
